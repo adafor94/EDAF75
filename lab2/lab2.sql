@@ -42,18 +42,18 @@ CREATE TABLE tickets (
   theater_name TEXT,
   time TIME,
   date DATE,
-  user_name TEXT,
-  FOREIGN KEY (user_name) REFERENCES customers(user_name),
+  username TEXT,
+  FOREIGN KEY (username) REFERENCES customers(username),
   FOREIGN KEY (theater_name, time, date) REFERENCES performances(theater_name, time, date)
   PRIMARY KEY (id)
 );
 
 CREATE TABLE customers (
-  user_name TEXT,
+  username TEXT,
   first_name TEXT,
   last_name TEXT,
   pass TEXT,
-  PRIMARY KEY (user_name)
+  PRIMARY KEY (username)
 );
 
 -- Insert data into the tables.
@@ -80,7 +80,7 @@ VALUES  ('19:00', '2022-03-01', 'Licorice Pizza', 2021, 'Kino'),
         ('21:00', '2022-03-08', 'Killers of the Flower Moon', 2022, 'SF Malmö');
 
 INSERT
-INTO    customers(user_name, first_name, last_name, pass)
+INTO    customers(username, first_name, last_name, pass)
 VALUES  ('alice123', 'Alice', 'Aliceson', 'password12'),
         ('bob123', 'Bob', 'Bobson', 'password12');
 
