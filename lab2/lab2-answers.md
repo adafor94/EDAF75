@@ -22,12 +22,12 @@ colleges(\_c_name*, state, enrollment)
 applications(/_s_id_/, /_c_name_/, _major_, decision)
 
     theater(_name_, capacity)
-    performance(_/theater_name/_, _time_, _date_, /title/, /production_year/)
+    performance(_performance_id_, time, date, /theater_name/, /title/, /production_year/)
     movies(_title_, _production_year_, IMDB_key, run_time)
-    ticket(_id_, /theater_name/, /time/, /date/, /username/)
+    ticket(_id_, /performance_id/, /username/)
     customer(_username_, first_name, last_name, password)
 
 7. There are at least two ways of keeping track of the number of seats available for each performance – describe them both, with their upsides and downsides (write your answer in lab2-answers.md).
-   - Ackumulate or update?
+   - Ackumulate or update.
 
 For your own database, you can choose either method, but you should definitely be aware of both.
