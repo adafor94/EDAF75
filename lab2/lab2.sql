@@ -19,6 +19,7 @@ CREATE TABLE theaters (
 );
 
 CREATE TABLE performances (
+  performance_id INT DEFAULT (lower(hex(randomblob(16)))),
   time TIME,
   date DATE,
   title TEXT,
@@ -26,7 +27,7 @@ CREATE TABLE performances (
   theater_name TEXT,
   FOREIGN KEY (theater_name) REFERENCES theaters(theater_name),
   FOREIGN KEY (title, production_year) REFERENCES movies(title, production_year)
-  PRIMARY KEY (theater_name, time, date)
+  PRIMARY KEY (performance_id)
 );
 
 CREATE TABLE movies (
@@ -38,14 +39,12 @@ CREATE TABLE movies (
 );
 
 CREATE TABLE tickets (
-  id TEXT DEFAULT (lower(hex(randomblob(16)))),
-  theater_name TEXT,
-  time TIME,
-  date DATE,
+  ticket_id TEXT DEFAULT (lower(hex(randomblob(16)))),
+  performance_id INT,
   username TEXT,
   FOREIGN KEY (username) REFERENCES customers(username),
-  FOREIGN KEY (theater_name, time, date) REFERENCES performances(theater_name, time, date)
-  PRIMARY KEY (id)
+  FOREIGN KEY (performance_id) REFERENCES performances(performance_id)
+  PRIMARY KEY (ticket_id)
 );
 
 CREATE TABLE customers (
@@ -83,4 +82,3 @@ INSERT
 INTO    customers(username, first_name, last_name, pass)
 VALUES  ('alice123', 'Alice', 'Aliceson', 'password12'),
         ('bob123', 'Bob', 'Bobson', 'password12');
-

@@ -1,12 +1,12 @@
 4. Identify keys, both primary keys and foreign keys. Answer these questions (put your answer in lab2-answers.md):
 
-a) Which relations have natural keys? - All.
+a) Which relations have natural keys? - All. Except maybe ticket?
 
-b) Is there a risk that any of the natural keys will ever change? - username, and performance time and date might change.
+b) Is there a risk that any of the natural keys will ever change? - theater name, username, and performance time and date might change.
 
-c) Are there any weak entity sets? - Not sure, but maybe "ticket"?
+c) Are there any weak entity sets? - Not sure, but maybe Performance. Depending on the definition. It uses a foreign key as primary key.
 
-d) In which relations do you want to use an invented key. Why? - Does uuid in "ticket" count as invented? Maybe in performances? To avoid having the time and date change.
+d) In which relations do you want to use an invented key. Why? - Maybe in performances? To avoid having the time and date change.
 
 6. Convert the E/R model to a relational model, use the method described during lecture 4.
 
