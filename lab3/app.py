@@ -1,7 +1,7 @@
 from bottle import get, post, run, request, response
 import sqlite3
 from urllib.parse import unquote
-
+import hashlib
 
 file = "filename"
 db = sqlite3.connect("movies.sqlite")
@@ -36,7 +36,6 @@ def resetDatabase():
 def post_user():
     user = request.json
     c = db.cursor()
-    print([user['username'], user['fullName'], user['pwd']])
     c.execute(
         """
         INSERT
@@ -44,7 +43,7 @@ def post_user():
         VALUES  (?, ?, ?)
         RETURNING username
         """,
-        [user['username'], user['fullName'], user['pwd']]
+        [user['username'], user['fullName'], hash(user['pwd'])]
     )
     found = c.fetchone()
     if not found:
@@ -202,7 +201,7 @@ def post_ticket():
         SELECT username
         FROM users
         WHERE username == ? AND pwd = ?
-        """, [ticket["username"], ticket["pwd"]]
+        """, [ticket["username"], hash(ticket["pwd"])]
     )
 
     found = c.fetchone()
@@ -227,6 +226,31 @@ def post_ticket():
         db.commit()
         response.status = 201
         return "/tickets/{found}"
+
+@get('/users/<username>/tickets')
+def get_ticket_by_username(username):
+    c = db.cursor()
+    c.execute(
+       """
+       SELECT date, time, theater_name, title, year, count() AS nbrOfTickets
+       FROM tickets
+       JOIN performances
+       USING (performance_id)
+       JOIN movies
+       USING (imdbKey)
+       WHERE username == ?
+       GROUP BY performance_id
+       """, [username]
+    )
+
+    found = [{"date": date, "startTime": time, "theater": theater_name, "title": title, "year": year, "nbrOfTickets": nbrOfTickets}
+                for date, time, theater_name, title, year, nbrOfTickets in c]
+
+    response.status = 201
+    return {"data" : found}
+
+def hash(msg):
+    return hashlib.sha256(msg.encode('utf-8')).hexdigest()
 
 run(host='localhost', port=7007)
 
